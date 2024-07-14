@@ -17,10 +17,15 @@ io.on("connection", function(socket){
     console.log("A user connected");
 
     socket.on("send-location", function(data){ 
+        console.log(`Received location from ${socket.id}: ${data.latitude}, ${data.longitude}`);
         io.emit("receive-location", {id: socket.id, ...data});
     });
 
-   
+   socket.on("disconnect",function(){ 
+    console.log(`User disconnected: ${socket.id}`);
+    io.emit("user-disconnected",socket.id) ; 
+    console.log("user-disconnected")
+   })
 });
 
 app.get("/", function(req, res){ 
